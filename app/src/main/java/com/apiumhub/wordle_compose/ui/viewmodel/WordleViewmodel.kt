@@ -6,7 +6,6 @@ import com.apiumhub.wordle_compose.data.WordsRepository
 
 class WordleViewmodel(private val wordsRepository: WordsRepository) : ViewModel() {
     fun hello() {
-
         Log.d("Wordle", wordsRepository.getTodaysWord())
     }
 }

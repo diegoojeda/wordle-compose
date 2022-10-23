@@ -5,6 +5,9 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 
 internal class WordMatcherUseCaseTest {
 
@@ -30,5 +33,13 @@ internal class WordMatcherUseCaseTest {
         assert(actual.state.all {
             it.second == LetterState.NOT_INCLUDED
         })
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["", "AAAA", "AAAAAA"])
+    internal fun `should fail with less than 5 letters in word`(input: String) {
+        assertThrows<IllegalArgumentException> {
+            sut(input)
+        }
     }
 }

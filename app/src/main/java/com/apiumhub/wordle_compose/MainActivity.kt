@@ -3,10 +3,9 @@ package com.apiumhub.wordle_compose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -16,11 +15,16 @@ import com.apiumhub.wordle_compose.domain.LetterState
 import com.apiumhub.wordle_compose.domain.WordleLetter
 import com.apiumhub.wordle_compose.ui.components.LetterBox
 import com.apiumhub.wordle_compose.ui.theme.WordleComposeTheme
+import com.apiumhub.wordle_compose.ui.viewmodel.WordleViewmodel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
+    private val wordsViewModel: WordleViewmodel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        wordsViewModel.hello()
         setContent {
             WordleComposeTheme {
                 // A surface container using the 'background' color from the theme
@@ -34,11 +38,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WordleGrid() {
     LazyVerticalGrid(
-        cells = GridCells.Fixed(5),
+        columns = GridCells.Fixed(5),
         content = {
             items(25) {
                 LetterBox(letter = WordleLetter("A"), state = LetterState.MATCH)

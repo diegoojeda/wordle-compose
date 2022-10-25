@@ -3,6 +3,8 @@ package com.apiumhub.wordle_compose.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +22,8 @@ fun LetterBox(letter: WordleLetter, state: LetterState) {
     Text(
         text = letter.letter,
         modifier = Modifier
+            .aspectRatio(1f)
+            .defaultMinSize(48.dp)
             .background(color = Color.White)
             .padding(8.dp)
             .border(width = 1.dp, color = Color.Black)
@@ -42,8 +46,8 @@ fun Preview() {
 
 private fun calculateState(state: LetterState): Color =
     when (state) {
-        LetterState.EMPTY -> Color.Gray
-        LetterState.NOT_INCLUDED -> Color.Gray
+        LetterState.EMPTY -> Color.LightGray
+        LetterState.NOT_INCLUDED -> Color.DarkGray
         LetterState.INCLUDED -> Color.Yellow
         LetterState.MATCH -> Color.Green
     }

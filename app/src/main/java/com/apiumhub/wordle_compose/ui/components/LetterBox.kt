@@ -33,14 +33,16 @@ fun LetterBox(letter: WordleLetter, state: LetterState) {
 @Composable
 fun Preview() {
     Column {
-        LetterBox(letter = WordleLetter("A"), state = LetterState.INCLUDED)
-        LetterBox(letter = WordleLetter("B"), state = LetterState.NOT_INCLUDED)
-        LetterBox(letter = WordleLetter("C"), state = LetterState.MATCH)
+        LetterBox(letter = WordleLetter.FilledWordleLetter("A"), state = LetterState.INCLUDED)
+        LetterBox(letter = WordleLetter.FilledWordleLetter("B"), state = LetterState.NOT_INCLUDED)
+        LetterBox(letter = WordleLetter.FilledWordleLetter("C"), state = LetterState.MATCH)
+        LetterBox(letter = WordleLetter.EmptyWordleLetter, state = LetterState.EMPTY)
     }
 }
 
 private fun calculateState(state: LetterState): Color =
     when (state) {
+        LetterState.EMPTY -> Color.Gray
         LetterState.NOT_INCLUDED -> Color.Gray
         LetterState.INCLUDED -> Color.Yellow
         LetterState.MATCH -> Color.Green

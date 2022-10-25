@@ -7,7 +7,7 @@ class WordMatcherUseCase(private val wordsRepository: WordsRepository) {
         val todaysWord = wordsRepository.getTodaysWord()
         return WordMatchState(typedWord.mapIndexed { index, char ->
             val foundIndex = todaysWord.indexOf(char, ignoreCase = true)
-            Pair(WordleLetter(char.toString()), calculateIndexState(index, foundIndex))
+            Pair(WordleLetter.FilledWordleLetter(char.toString()), calculateIndexState(index, foundIndex))
         })
     }
 

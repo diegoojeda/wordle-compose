@@ -1,5 +1,6 @@
 package com.apiumhub.wordle_compose.domain
 
+import com.apiumhub.wordle_compose.domain.WordleLetter.FilledWordleLetter
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
@@ -25,7 +26,7 @@ internal class WordMatchStateTest {
     }
 
     companion object {
-        private val singleValue = Pair(WordleLetter("A"), LetterState.MATCH)
+        private val singleValue = Pair(FilledWordleLetter("A"), LetterState.MATCH)
         private val expectedEmpty = generateItems(0)
         private val expectedOneItem = generateItems(1)
         private val expectedFiveItems = generateItems(5)

@@ -10,7 +10,7 @@ import com.apiumhub.wordle_compose.domain.WordleLetter
 fun WordBox() {
     Row {
         repeat(5) {
-            LetterBox(letter = WordleLetter("A"), state = LetterState.MATCH)
+            LetterBox(letter = WordleLetter.FilledWordleLetter("A"), state = LetterState.MATCH)
         }
     }
 }

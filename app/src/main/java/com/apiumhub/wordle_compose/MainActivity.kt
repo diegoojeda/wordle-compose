@@ -44,7 +44,7 @@ fun WordleGrid() {
         columns = GridCells.Fixed(5),
         content = {
             items(25) {
-                LetterBox(letter = WordleLetter("A"), state = LetterState.MATCH)
+                LetterBox(letter = WordleLetter.EmptyWordleLetter, state = LetterState.EMPTY)
             }
         }
     )

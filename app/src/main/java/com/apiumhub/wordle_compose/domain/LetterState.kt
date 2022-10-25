@@ -1,27 +1,33 @@
 package com.apiumhub.wordle_compose.domain
 
 enum class LetterState {
+    EMPTY,
     NOT_INCLUDED,
     INCLUDED,
     MATCH
 }
 
-data class WordleLetter(val letter: String) {
-    init {
-        if (letter.count() != 1) {
-            throw IllegalArgumentException("A WordleLetter can have one letter at most")
+sealed class WordleLetter(open val letter: String) {
+
+    object EmptyWordleLetter : WordleLetter("")
+
+    data class FilledWordleLetter(override val letter: String) : WordleLetter(letter) {
+        init {
+            if (letter.count() != 1) {
+                throw IllegalArgumentException("A WordleLetter can have one letter at most")
+            }
         }
-    }
 
-    override fun equals(other: Any?): Boolean {
-        return if (other !is WordleLetter)
-            false
-        else
-            this.letter.equals(other.letter, true)
-    }
+        override fun equals(other: Any?): Boolean {
+            return if (other !is FilledWordleLetter)
+                false
+            else
+                this.letter.equals(other.letter, true)
+        }
 
-    override fun hashCode(): Int {
-        return letter.hashCode()
+        override fun hashCode(): Int {
+            return letter.hashCode()
+        }
     }
 }
 

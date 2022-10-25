@@ -19,7 +19,7 @@ import com.apiumhub.wordle_compose.ui.theme.WordleComposeTheme
 //Source https://gist.github.com/nglauber/4cb1573efba9024c008ea71f3320b4d8
 
 @Composable
-fun Keyboard(onPressed: (String) -> Unit) {
+fun Keyboard(onPressed: (KeyEvent) -> Unit) {
     val keysMatrix = arrayOf(
         arrayOf("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"),
         arrayOf("A", "S", "D", "F", "G", "H", "J", "K", "L"),
@@ -88,7 +88,7 @@ fun KeyboardKey(
     keyboardKey: String,
     modifier: Modifier,
     modifierPressed: Modifier,
-    pressed: (String) -> Unit
+    pressed: (KeyEvent) -> Unit
 ) {
     var isKeyPressed by remember { mutableStateOf(false) }
     Text(keyboardKey, Modifier
@@ -99,7 +99,7 @@ fun KeyboardKey(
                 val success = tryAwaitRelease()
                 if (success) {
                     isKeyPressed = false
-                    pressed(keyboardKey)
+                    pressed(KeyEvent.create(keyboardKey))
                 } else {
                     isKeyPressed = false
                 }
@@ -137,5 +137,20 @@ fun keyboardPreview() {
         Keyboard {
 
         }
+    }
+}
+
+sealed class KeyEvent {
+    object Delete : KeyEvent()
+    object Send : KeyEvent()
+    data class Letter(val letter: String) : KeyEvent()
+
+    companion object {
+        fun create(keyEvent: String) =
+            when (keyEvent) {
+                "Del" -> Delete
+                "Send" -> Send
+                else -> Letter(keyEvent)
+            }
     }
 }

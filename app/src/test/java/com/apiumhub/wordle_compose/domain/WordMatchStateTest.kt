@@ -13,7 +13,7 @@ internal class WordMatchStateTest {
     @MethodSource("failingInputMethod")
     internal fun `should fail with less than 5 letters in word`(input: List<Pair<WordleLetter, LetterState>>) {
         assertThrows<IllegalArgumentException> {
-            WordMatchState(input.toList())
+            WordMatchState.FilledWordMatchState(input.toList())
         }
     }
 
@@ -21,7 +21,7 @@ internal class WordMatchStateTest {
     @MethodSource("successInputMethod")
     internal fun `should not fail with exactly 5 letters in word`(input: List<Pair<WordleLetter, LetterState>>) {
         assertDoesNotThrow {
-            WordMatchState(input.toList())
+            WordMatchState.FilledWordMatchState(input.toList())
         }
     }
 

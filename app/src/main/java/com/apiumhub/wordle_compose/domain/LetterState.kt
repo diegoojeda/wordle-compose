@@ -2,6 +2,7 @@ package com.apiumhub.wordle_compose.domain
 
 enum class LetterState {
     EMPTY,
+    NOT_CHECKED,
     NOT_INCLUDED,
     INCLUDED,
     MATCH
@@ -31,10 +32,14 @@ sealed class WordleLetter(open val letter: String) {
     }
 }
 
-data class WordMatchState(val state: List<Pair<WordleLetter, LetterState>>) {
-    init {
-        if (state.size != 5) {
-            throw IllegalArgumentException("Only words with exactly 5 letters are accepted")
+sealed class WordMatchState {
+    object EmptyMatchState : WordMatchState()
+    data class FilledWordMatchState(val state: List<Pair<WordleLetter, LetterState>>) :
+        WordMatchState() {
+        init {
+            if (state.size != 5) {
+                throw IllegalArgumentException("Only words with exactly 5 letters are accepted")
+            }
         }
     }
 }

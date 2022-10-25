@@ -3,6 +3,7 @@ package com.apiumhub.wordle_compose.domain
 import com.apiumhub.wordle_compose.data.WordsRepository
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -33,6 +34,28 @@ internal class WordMatcherUseCaseTest {
         assert(actual.state.all {
             it.second == LetterState.NOT_INCLUDED
         })
+    }
+
+    @Test
+    internal fun `should find included letters but not matched`() {
+        val actual = sut("mupia")
+        assert(actual.state.all {
+            it.second == LetterState.INCLUDED
+        })
+    }
+
+    @Test
+    internal fun `should find all included, not included and matched letters`() {
+        val actual = sut("apoim")
+        actual.state.forEachIndexed { index, pair ->
+            when(index){
+                0 -> assertEquals(pair.second, LetterState.MATCH)
+                1 -> assertEquals(pair.second, LetterState.MATCH)
+                2 -> assertEquals(pair.second, LetterState.NOT_INCLUDED)
+                3 -> assertEquals(pair.second, LetterState.INCLUDED)
+                4 -> assertEquals(pair.second, LetterState.MATCH)
+            }
+        }
     }
 
     @ParameterizedTest

@@ -4,8 +4,8 @@ import com.apiumhub.wordle_compose.domain.LetterState
 import com.apiumhub.wordle_compose.domain.WordleLetter
 
 data class BoardLetter private constructor(
-    private val letter: WordleLetter,
-    private val state: LetterState
+    val letter: WordleLetter,
+    val state: LetterState
 ) {
     fun isEmpty() = letter is WordleLetter.EmptyWordleLetter
 

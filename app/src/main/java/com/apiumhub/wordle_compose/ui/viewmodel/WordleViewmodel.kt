@@ -17,11 +17,15 @@ class WordleViewmodel(
         private set
 
     fun onLetterPressed(letter: String) {
-        boardState = boardState.copy(state = boardState.addLetter(letter).state)
+        runCatching {
+            boardState = boardState.addLetter(letter)
+        }
     }
 
     fun onDelPressed() {
-        boardState.deleteLastLetter()
+        runCatching {
+            boardState = boardState.deleteLastLetter()
+        }
     }
 
     fun onSendPressed() {

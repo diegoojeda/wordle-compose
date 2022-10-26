@@ -16,10 +16,9 @@ internal class BoardRowTest {
         size: Int,
         assertion: Boolean
     ) {
-        val actual = BoardRow.empty().apply {
-            repeat(size) {
-                this.addLetter("A")
-            }
+        var actual = BoardRow.empty()
+        repeat(size) {
+            actual = actual.addLetter("A")
         }
         assertEquals(assertion, actual.isCompletedRow())
     }
@@ -33,7 +32,7 @@ internal class BoardRowTest {
     @Test
     internal fun `should throw when trying to delete a letter on an empty row`() {
         val actual = BoardRow.empty()
-        assertThrows<IllegalStateException> {
+        assertThrows<NoSuchElementException> {
             actual.deleteLastLetter()
         }
     }

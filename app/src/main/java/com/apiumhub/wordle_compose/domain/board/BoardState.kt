@@ -6,12 +6,23 @@ data class BoardState private constructor(val state: List<BoardRow>) {
         val currentRow = getCurrentRow()
         if (currentRow.isCompletedRow())
             throw IllegalStateException("Row already full, cannot add more letters to it")
-        return this.copy(state = state.apply { getCurrentRow().addLetter(letter) })
+        val index = state.indexOf(currentRow)
+        return this.copy(
+            state =
+            state.subList(0, index) +
+                    currentRow.addLetter(letter) +
+                    state.subList(index + 1, state.size)
+        )
     }
 
     fun deleteLastLetter(): BoardState {
-        getCurrentRow().deleteLastLetter()
-        return this
+        val currentRow = getCurrentRow()
+        val currentRowIndex = state.indexOf(currentRow)
+        return this.copy(
+            state = state.subList(0, currentRowIndex) +
+                    currentRow.deleteLastLetter() +
+                    state.subList(currentRowIndex + 1, state.size)
+        )
     }
 
     fun getCurrentRow() = state.first { !it.isMatched() }

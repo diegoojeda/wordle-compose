@@ -28,8 +28,13 @@ internal class BoardStateTest {
         val actual =
             emptyBoard.addLetter("A").addLetter("P").addLetter("I").addLetter("U").addLetter("M")
                 .deleteLastLetter()
-        assertEquals(4, actual.getCurrentRow().row.size)
-        assertEquals("U", actual.getCurrentRow().row[4].getLetter())
+        assertEquals(4, actual.getCurrentRow().row.fold(0) { acc, next ->
+            acc + if (!next.isEmpty())
+                1
+            else
+                0
+        })
+        assertEquals("U", actual.getCurrentRow().row[3].getLetter())
     }
 
     @Test

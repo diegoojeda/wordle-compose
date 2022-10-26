@@ -4,17 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.apiumhub.wordle_compose.domain.LetterState
-import com.apiumhub.wordle_compose.domain.WordleLetter
 import com.apiumhub.wordle_compose.domain.board.BoardState
 import com.apiumhub.wordle_compose.ui.components.KeyEvent
 import com.apiumhub.wordle_compose.ui.components.Keyboard
@@ -55,12 +50,23 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun WordleGrid(boardState: BoardState) {
-    Text(text = boardState.getCurrentRow().row.first().getLetter())
-    LazyVerticalGrid(columns = GridCells.Fixed(5), content = {
-        items(25) {
-            LetterBox(letter = WordleLetter.EmptyWordleLetter, state = LetterState.EMPTY)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(1.0f)
+    ) {
+        boardState.state.forEach { row ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                row.row.forEach { letter ->
+                    LetterBox(letter = letter.letter, state = letter.state)
+                }
+            }
         }
-    })
+    }
 }
 
 @Preview(showBackground = true)
@@ -68,7 +74,7 @@ fun WordleGrid(boardState: BoardState) {
 fun DefaultPreview() {
     WordleComposeTheme {
         Row {
-            //WordleGrid()
+            WordleGrid(BoardState.empty())
             Keyboard {
 
             }

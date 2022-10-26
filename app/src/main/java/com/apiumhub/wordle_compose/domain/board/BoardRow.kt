@@ -5,17 +5,25 @@ data class BoardRow private constructor(val row: List<BoardLetter>) {
     fun isCompletedRow() = row.all { !it.isEmpty() }
 
     fun addLetter(letter: String): BoardRow {
-        return this.copy(row = row.apply { firstEmptyLetter().setLetter(letter) })
+        val firstEmptyLetterIndex = row.indexOfFirst { it == firstEmptyLetter() }
+        return copy(
+            row =
+            row.subList(0, firstEmptyLetterIndex) +
+                    listOf(firstEmptyLetter().setLetter(letter)) +
+                    row.subList(firstEmptyLetterIndex + 1, row.size)
+        )
     }
 
     fun isMatched() = row.any { it.isMatched() }
 
-    fun deleteLastLetter() =
-        runCatching {
-            row.last { !it.isEmpty() }
-        }
-            .getOrElse { throw IllegalStateException("Can't delete a letter on an already empty row") }
-            .deleteLetter()
+    fun deleteLastLetter(): BoardRow {
+        val lastFilledLetter = row.last { !it.isEmpty() }
+        val toDeleteIndex = row.lastIndexOf(lastFilledLetter)
+        return copy(row =
+        row.subList(0, toDeleteIndex) +
+                List(LETTERS_PER_WORD - toDeleteIndex) { BoardLetter.empty() }
+        )
+    }
 
     private fun firstEmptyLetter() =
         row.first { it.isEmpty() }
@@ -23,6 +31,9 @@ data class BoardRow private constructor(val row: List<BoardLetter>) {
     override fun toString(): String {
         return row.joinToString { it.toString() }
     }
+
+    fun isEmpty(): Boolean =
+        row.all { it.isEmpty() }
 
     companion object {
         private const val LETTERS_PER_WORD = 5

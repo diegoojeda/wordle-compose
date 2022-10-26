@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +22,6 @@ fun LetterBox(letter: WordleLetter, state: LetterState) {
         text = letter.letter,
         modifier = Modifier
             .aspectRatio(1f)
-            .defaultMinSize(48.dp)
             .background(color = Color.White)
             .padding(8.dp)
             .border(width = 1.dp, color = Color.Black)

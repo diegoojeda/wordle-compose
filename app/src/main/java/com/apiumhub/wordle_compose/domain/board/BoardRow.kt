@@ -1,6 +1,6 @@
 package com.apiumhub.wordle_compose.domain.board
 
-data class BoardRow private constructor(val row: List<BoardLetter>) {
+data class BoardRow constructor(val row: List<BoardLetter>) {
 
     fun isCompletedRow() = row.all { !it.isEmpty() }
 
@@ -34,6 +34,8 @@ data class BoardRow private constructor(val row: List<BoardLetter>) {
 
     fun isEmpty(): Boolean =
         row.all { it.isEmpty() }
+
+    fun getWord(): String = row.joinToString("") { it.letter.letter }
 
     companion object {
         private const val LETTERS_PER_WORD = 5

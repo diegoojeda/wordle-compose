@@ -1,17 +1,21 @@
 package com.apiumhub.wordle_compose.domain
 
 import com.apiumhub.wordle_compose.data.WordsRepository
+import com.apiumhub.wordle_compose.domain.board.BoardLetter
+import com.apiumhub.wordle_compose.domain.board.BoardRow
 
 class WordMatcherUseCase(private val wordsRepository: WordsRepository) {
-    operator fun invoke(typedWord: String): WordMatchState.FilledWordMatchState {
+    operator fun invoke(typedWord: String): WordMatchState {
         val todaysWord = wordsRepository.getTodaysWord()
-        return WordMatchState.FilledWordMatchState(typedWord.mapIndexed { index, char ->
-            val foundIndex = todaysWord.indexOf(char, ignoreCase = true)
-            Pair(
-                WordleLetter.FilledWordleLetter(char.toString()),
-                calculateIndexState(index, foundIndex)
-            )
-        })
+        return WordMatchState(
+            BoardRow(typedWord.mapIndexed { index, char ->
+                val foundIndex = todaysWord.indexOf(char, ignoreCase = true)
+                BoardLetter(
+                    WordleLetter.FilledWordleLetter(char.toString()),
+                    calculateIndexState(index, foundIndex)
+                )
+            })
+        )
     }
 
     private fun calculateIndexState(index: Int, foundIndex: Int) =

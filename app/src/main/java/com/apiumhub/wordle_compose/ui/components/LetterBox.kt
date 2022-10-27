@@ -43,9 +43,9 @@ fun Preview() {
 }
 
 private fun calculateState(state: LetterState): Color = when (state) {
-    LetterState.EMPTY -> Color.LightGray
-    LetterState.NOT_CHECKED -> Color.LightGray
-    LetterState.NOT_INCLUDED -> Color.DarkGray
+    LetterState.EMPTY -> Color.White
+    LetterState.NOT_CHECKED -> Color.White
+    LetterState.NOT_INCLUDED -> Color.LightGray
     LetterState.INCLUDED -> Color.Yellow
     LetterState.MATCH -> Color.Green
 }

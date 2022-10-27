@@ -1,5 +1,7 @@
 package com.apiumhub.wordle_compose.domain.board
 
+import com.apiumhub.wordle_compose.domain.WordMatchState
+
 data class BoardState private constructor(val state: List<BoardRow>) {
 
     fun addLetter(letter: String): BoardState {
@@ -27,8 +29,17 @@ data class BoardState private constructor(val state: List<BoardRow>) {
 
     fun getCurrentRow() = state.first { !it.isMatched() }
 
-    fun isFullWord() {
+    fun getWord(): String =
+        getCurrentRow().getWord()
 
+    fun updateWithMatchedWord(result: WordMatchState): BoardState {
+        val currentRow = getCurrentRow()
+        val currentRowIndex = state.indexOf(currentRow)
+        return this.copy(
+            state = state.subList(0, currentRowIndex) +
+                    result.state +
+                    state.subList(currentRowIndex + 1, state.size)
+        )
     }
 
     companion object {

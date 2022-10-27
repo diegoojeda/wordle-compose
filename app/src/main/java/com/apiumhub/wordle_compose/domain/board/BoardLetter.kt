@@ -3,7 +3,7 @@ package com.apiumhub.wordle_compose.domain.board
 import com.apiumhub.wordle_compose.domain.LetterState
 import com.apiumhub.wordle_compose.domain.WordleLetter
 
-data class BoardLetter private constructor(
+data class BoardLetter(
     val letter: WordleLetter,
     val state: LetterState
 ) {

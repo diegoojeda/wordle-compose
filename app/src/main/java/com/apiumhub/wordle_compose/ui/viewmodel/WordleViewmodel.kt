@@ -4,17 +4,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.apiumhub.wordle_compose.domain.WordMatcherUseCase
 import com.apiumhub.wordle_compose.domain.board.BoardState
+import com.apiumhub.wordle_compose.domain.repository.DictionaryRepository
+import com.apiumhub.wordle_compose.domain.usecase.WordMatcherUseCase
 
 class WordleViewmodel(
-    val matcherUseCase: WordMatcherUseCase
+    private val matcherUseCase: WordMatcherUseCase,
+    private val dictionaryRepository: DictionaryRepository
 ) : ViewModel() {
 
     var boardState by mutableStateOf(BoardState.empty())
         private set
 
     fun onLetterPressed(letter: String) {
+        dictionaryRepository.isWordInDictionary("abece")
         runCatching {
             boardState = boardState.addLetter(letter)
         }

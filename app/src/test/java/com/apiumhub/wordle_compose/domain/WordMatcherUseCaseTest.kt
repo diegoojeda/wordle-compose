@@ -1,6 +1,7 @@
 package com.apiumhub.wordle_compose.domain
 
-import com.apiumhub.wordle_compose.data.WordsRepository
+import com.apiumhub.wordle_compose.domain.repository.WordsRepository
+import com.apiumhub.wordle_compose.domain.usecase.WordMatcherUseCase
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals

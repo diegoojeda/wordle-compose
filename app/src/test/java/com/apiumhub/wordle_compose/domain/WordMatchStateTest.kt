@@ -1,6 +1,8 @@
 package com.apiumhub.wordle_compose.domain
 
 import com.apiumhub.wordle_compose.domain.WordleLetter.FilledWordleLetter
+import com.apiumhub.wordle_compose.domain.board.BoardLetter
+import com.apiumhub.wordle_compose.domain.board.BoardRow
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
@@ -11,22 +13,22 @@ internal class WordMatchStateTest {
 
     @ParameterizedTest
     @MethodSource("failingInputMethod")
-    internal fun `should fail with less than 5 letters in word`(input: List<Pair<WordleLetter, LetterState>>) {
+    internal fun `should fail with less than 5 letters in word`(input: List<BoardLetter>) {
         assertThrows<IllegalArgumentException> {
-            WordMatchState.WordMatchState(input.toList())
+            WordMatchState(BoardRow(input))
         }
     }
 
     @ParameterizedTest
     @MethodSource("successInputMethod")
-    internal fun `should not fail with exactly 5 letters in word`(input: List<Pair<WordleLetter, LetterState>>) {
+    internal fun `should not fail with exactly 5 letters in word`(input: List<BoardLetter>) {
         assertDoesNotThrow {
-            WordMatchState.WordMatchState(input.toList())
+            WordMatchState(BoardRow(input))
         }
     }
 
     companion object {
-        private val singleValue = Pair(FilledWordleLetter("A"), LetterState.MATCH)
+        private val singleValue = BoardLetter(FilledWordleLetter("A"), LetterState.MATCH)
         private val expectedEmpty = generateItems(0)
         private val expectedOneItem = generateItems(1)
         private val expectedFiveItems = generateItems(5)

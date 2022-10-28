@@ -8,16 +8,23 @@ import com.apiumhub.wordle_compose.domain.board.BoardState
 import com.apiumhub.wordle_compose.domain.repository.DictionaryRepository
 import com.apiumhub.wordle_compose.domain.usecase.WordMatcherUseCase
 
+sealed class ErrorState {
+    object NoError : ErrorState()
+    object WordNotInDictionaryError : ErrorState()
+}
+
 class WordleViewmodel(
     private val matcherUseCase: WordMatcherUseCase,
     private val dictionaryRepository: DictionaryRepository
 ) : ViewModel() {
 
-    var boardState by mutableStateOf(BoardState.empty())
+    var errorState: ErrorState by mutableStateOf(ErrorState.NoError)
+        private set
+
+    var boardState: BoardState by mutableStateOf(BoardState.empty())
         private set
 
     fun onLetterPressed(letter: String) {
-        dictionaryRepository.isWordInDictionary("abece")
         runCatching {
             boardState = boardState.addLetter(letter)
         }
@@ -30,7 +37,12 @@ class WordleViewmodel(
     }
 
     fun onSendPressed() {
-        val result = matcherUseCase(boardState.getWord())
-        boardState = boardState.updateWithMatchedWord(result)
+        val word = boardState.getWord()
+        if (dictionaryRepository.isWordInDictionary(word)) {
+            errorState = ErrorState.WordNotInDictionaryError
+        } else {
+            val result = matcherUseCase(word)
+            boardState = boardState.updateWithMatchedWord(result)
+        }
     }
 }

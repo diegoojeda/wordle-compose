@@ -15,6 +15,7 @@ import com.apiumhub.wordle_compose.ui.components.KeyEvent
 import com.apiumhub.wordle_compose.ui.components.Keyboard
 import com.apiumhub.wordle_compose.ui.components.LetterBox
 import com.apiumhub.wordle_compose.ui.theme.WordleComposeTheme
+import com.apiumhub.wordle_compose.ui.viewmodel.ErrorState
 import com.apiumhub.wordle_compose.ui.viewmodel.WordleViewmodel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -33,6 +34,7 @@ class MainActivity : ComponentActivity() {
                         verticalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.padding(8.dp)
                     ) {
+                        ErrorSnackbar(viewModel.errorState)
                         WordleGrid(viewModel.boardState)
                         Keyboard {
                             when (it) {
@@ -46,6 +48,23 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+//@Composable
+fun ErrorSnackbar(errorState: ErrorState) {
+//    val scaffoldState: ScaffoldState = rememberScaffoldState()
+//    val coroutineScope: CoroutineScope = rememberCoroutineScope()
+//
+//    Scaffold(scaffoldState = scaffoldState) {
+//        Button(onClick = {
+//            coroutineScope.launch {
+//                scaffoldState.snackbarHostState.showSnackbar(
+//                    message = "This is your message",
+//                    actionLabel = "Do something"
+//                )
+//            }
+//        }) {}
+//    }
 }
 
 @Composable

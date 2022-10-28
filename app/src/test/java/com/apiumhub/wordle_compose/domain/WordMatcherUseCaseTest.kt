@@ -24,37 +24,37 @@ internal class WordMatcherUseCaseTest {
     @Test
     internal fun `should match all letters in word`() {
         val actual = sut("Apium")
-        assert(actual.state.all {
-            it.second == LetterState.MATCH
+        assert(actual.state.row.all {
+            it.state == LetterState.MATCH
         })
     }
 
     @Test
     internal fun `should not match any letter in word`() {
         val actual = sut("ZZZZZ")
-        assert(actual.state.all {
-            it.second == LetterState.NOT_INCLUDED
+        assert(actual.state.row.all {
+            it.state == LetterState.NOT_INCLUDED
         })
     }
 
     @Test
     internal fun `should find included letters but not matched`() {
         val actual = sut("mupia")
-        assert(actual.state.all {
-            it.second == LetterState.INCLUDED
+        assert(actual.state.row.all {
+            it.state == LetterState.INCLUDED
         })
     }
 
     @Test
     internal fun `should find all included, not included and matched letters`() {
         val actual = sut("apoim")
-        actual.state.forEachIndexed { index, pair ->
+        actual.state.row.forEachIndexed { index, letter ->
             when(index){
-                0 -> assertEquals(pair.second, LetterState.MATCH)
-                1 -> assertEquals(pair.second, LetterState.MATCH)
-                2 -> assertEquals(pair.second, LetterState.NOT_INCLUDED)
-                3 -> assertEquals(pair.second, LetterState.INCLUDED)
-                4 -> assertEquals(pair.second, LetterState.MATCH)
+                0 -> assertEquals(letter.state, LetterState.MATCH)
+                1 -> assertEquals(letter.state, LetterState.MATCH)
+                2 -> assertEquals(letter.state, LetterState.NOT_INCLUDED)
+                3 -> assertEquals(letter.state, LetterState.INCLUDED)
+                4 -> assertEquals(letter.state, LetterState.MATCH)
             }
         }
     }

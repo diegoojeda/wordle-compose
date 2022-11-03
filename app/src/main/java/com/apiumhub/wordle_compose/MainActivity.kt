@@ -4,9 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,54 +18,52 @@ import com.apiumhub.wordle_compose.ui.components.LetterBox
 import com.apiumhub.wordle_compose.ui.theme.WordleComposeTheme
 import com.apiumhub.wordle_compose.ui.viewmodel.ErrorState
 import com.apiumhub.wordle_compose.ui.viewmodel.WordleViewmodel
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
     private val viewModel: WordleViewmodel by viewModel()
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             WordleComposeTheme {
+                val snackbarHostState = remember { SnackbarHostState() }
+                val scope = rememberCoroutineScope()
+                val errorState = remember { viewModel.errorState }
                 Surface(
-                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
                 ) {
-                    Column(
-                        verticalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.padding(8.dp)
-                    ) {
-                        ErrorSnackbar(viewModel.errorState)
-                        WordleGrid(viewModel.boardState)
-                        Keyboard {
-                            when (it) {
-                                is KeyEvent.Letter -> viewModel.onLetterPressed(it.letter)
-                                KeyEvent.Delete -> viewModel.onDelPressed()
-                                KeyEvent.Send -> viewModel.onSendPressed()
+                    Scaffold(
+                        snackbarHost = { SnackbarHost(snackbarHostState) },
+                        content = {
+                            Column(
+                                verticalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier.padding(8.dp)
+                            ) {
+                                scope.launch {
+                                    if (errorState == ErrorState.WordNotInDictionaryError) {
+                                        snackbarHostState.showSnackbar("Word does not exists")
+                                    }
+                                }
+                                WordleGrid(viewModel.boardState)
+                                Keyboard {
+                                    when (it) {
+                                        is KeyEvent.Letter -> viewModel.onLetterPressed(it.letter)
+                                        KeyEvent.Delete -> viewModel.onDelPressed()
+                                        KeyEvent.Send -> viewModel.onSendPressed()
+                                    }
+                                }
                             }
                         }
-                    }
+                    )
                 }
             }
         }
     }
-}
-
-//@Composable
-fun ErrorSnackbar(errorState: ErrorState) {
-//    val scaffoldState: ScaffoldState = rememberScaffoldState()
-//    val coroutineScope: CoroutineScope = rememberCoroutineScope()
-//
-//    Scaffold(scaffoldState = scaffoldState) {
-//        Button(onClick = {
-//            coroutineScope.launch {
-//                scaffoldState.snackbarHostState.showSnackbar(
-//                    message = "This is your message",
-//                    actionLabel = "Do something"
-//                )
-//            }
-//        }) {}
-//    }
 }
 
 @Composable

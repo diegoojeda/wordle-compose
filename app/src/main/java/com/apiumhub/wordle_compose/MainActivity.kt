@@ -18,6 +18,7 @@ import com.apiumhub.wordle_compose.ui.components.LetterBox
 import com.apiumhub.wordle_compose.ui.theme.WordleComposeTheme
 import com.apiumhub.wordle_compose.ui.viewmodel.ErrorState
 import com.apiumhub.wordle_compose.ui.viewmodel.WordleViewmodel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -46,12 +47,7 @@ class MainActivity : ComponentActivity() {
                                     .fillMaxSize()
                                     .padding(paddingValues)
                             ) {
-                                if (viewModel.errorState == ErrorState.WordNotInDictionaryError) {
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar("Word does not exists")
-                                        viewModel.dismissError()
-                                    }
-                                }
+                                ErrorSnackbar(viewModel.errorState, scope, snackbarHostState, viewModel::dismissError)
                                 WordleGrid(viewModel.boardState)
                                 Keyboard {
                                     when (it) {
@@ -65,6 +61,21 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun ErrorSnackbar(
+    errorState: ErrorState,
+    scope: CoroutineScope,
+    snackbarHostState: SnackbarHostState,
+    dismissError: () -> Unit
+) {
+    if (errorState == ErrorState.WordNotInDictionaryError) {
+        scope.launch {
+            snackbarHostState.showSnackbar("Word does not exists")
+            dismissError()
         }
     }
 }

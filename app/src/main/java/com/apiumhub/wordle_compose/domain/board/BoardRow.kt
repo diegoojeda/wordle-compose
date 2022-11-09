@@ -16,6 +16,8 @@ data class BoardRow constructor(val row: List<BoardLetter>) {
 
     fun isMatched() = row.any { it.isMatched() }
 
+    fun isCorrectWord() = row.all { it.isCorrect() }
+
     fun deleteLastLetter(): BoardRow {
         val lastFilledLetter = row.last { !it.isEmpty() }
         val toDeleteIndex = row.lastIndexOf(lastFilledLetter)

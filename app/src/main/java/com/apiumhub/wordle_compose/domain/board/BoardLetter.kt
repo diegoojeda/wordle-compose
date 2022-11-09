@@ -27,6 +27,8 @@ data class BoardLetter(
         return "${letter.letter},${state.name}"
     }
 
+    fun isCorrect() = state == LetterState.MATCH
+
     companion object {
         fun empty() = BoardLetter(WordleLetter.EmptyWordleLetter, LetterState.EMPTY)
     }

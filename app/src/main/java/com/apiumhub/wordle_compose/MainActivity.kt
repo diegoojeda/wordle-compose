@@ -32,21 +32,24 @@ class MainActivity : ComponentActivity() {
             WordleComposeTheme {
                 val snackbarHostState = remember { SnackbarHostState() }
                 val scope = rememberCoroutineScope()
-                val errorState = remember { viewModel.errorState }
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Scaffold(
                         snackbarHost = { SnackbarHost(snackbarHostState) },
-                        content = {
+                        content = { paddingValues ->
                             Column(
                                 verticalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier.padding(8.dp)
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .fillMaxSize()
+                                    .padding(paddingValues)
                             ) {
-                                scope.launch {
-                                    if (errorState == ErrorState.WordNotInDictionaryError) {
+                                if (viewModel.errorState == ErrorState.WordNotInDictionaryError) {
+                                    scope.launch {
                                         snackbarHostState.showSnackbar("Word does not exists")
+                                        viewModel.dismissError()
                                     }
                                 }
                                 WordleGrid(viewModel.boardState)

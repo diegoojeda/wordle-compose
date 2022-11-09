@@ -40,4 +40,6 @@ data class WordMatchState(val state: BoardRow) {
             throw IllegalArgumentException("Only words with exactly 5 letters are accepted")
         }
     }
+
+    fun isCorrect(): Boolean = state.isCorrectWord()
 }

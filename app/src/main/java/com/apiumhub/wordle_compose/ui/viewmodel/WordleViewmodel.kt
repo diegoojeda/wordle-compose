@@ -8,6 +8,12 @@ import com.apiumhub.wordle_compose.domain.board.BoardState
 import com.apiumhub.wordle_compose.domain.repository.DictionaryRepository
 import com.apiumhub.wordle_compose.domain.usecase.WordMatcherUseCase
 
+sealed class FinishedState {
+    object NotFinished : FinishedState()
+    object Successful : FinishedState()
+    object UnSuccessful : FinishedState()
+}
+
 sealed class ErrorState {
     object NoError : ErrorState()
     object WordNotInDictionaryError : ErrorState()
@@ -24,6 +30,9 @@ class WordleViewmodel(
     var boardState: BoardState by mutableStateOf(BoardState.empty())
         private set
 
+    var finishedState: FinishedState by mutableStateOf(FinishedState.NotFinished)
+        private set
+
     fun onLetterPressed(letter: String) {
         runCatching {
             boardState = boardState.addLetter(letter)
@@ -38,11 +47,19 @@ class WordleViewmodel(
 
     fun onSendPressed() {
         val word = boardState.getWord()
-        if (dictionaryRepository.isWordInDictionary(word)) {
+        if (!dictionaryRepository.isWordInDictionary(word)) {
             errorState = ErrorState.WordNotInDictionaryError
         } else {
             val result = matcherUseCase(word)
             boardState = boardState.updateWithMatchedWord(result)
+            if (result.isCorrect())
+                finishedState = FinishedState.Successful
+            else if (boardState.isOutOfTries())
+                finishedState = FinishedState.UnSuccessful
         }
+    }
+
+    fun dismissError() {
+        errorState = ErrorState.NoError
     }
 }

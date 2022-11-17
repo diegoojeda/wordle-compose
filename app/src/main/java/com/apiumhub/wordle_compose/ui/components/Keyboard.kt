@@ -19,15 +19,15 @@ import com.apiumhub.wordle_compose.ui.theme.WordleComposeTheme
 //Source https://gist.github.com/nglauber/4cb1573efba9024c008ea71f3320b4d8
 
 @Composable
-fun Keyboard(onPressed: (KeyEvent) -> Unit) {
+fun Keyboard(modifier: Modifier = Modifier, onPressed: (KeyEvent) -> Unit) {
     val keysMatrix = arrayOf(
         arrayOf("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"),
-        arrayOf("A", "S", "D", "F", "G", "H", "J", "K", "L"),
+        arrayOf("A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ"),
         arrayOf("Del", "Z", "X", "C", "V", "B", "N", "M", "Send")
     )
     val refsMap = mutableMapOf<String, ConstrainedLayoutReference>()
     ConstraintLayout(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .graphicsLayer(clip = false)
     ) {

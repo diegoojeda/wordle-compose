@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,13 +44,13 @@ class MainActivity : ComponentActivity() {
                             Column(
                                 verticalArrangement = Arrangement.SpaceBetween,
                                 modifier = Modifier
-                                    .padding(8.dp)
+                                    .padding(24.dp)
                                     .fillMaxSize()
                                     .padding(paddingValues)
                             ) {
                                 ErrorSnackbar(viewModel.errorState, scope, snackbarHostState, viewModel::dismissError)
                                 WordleGrid(viewModel.boardState)
-                                Keyboard {
+                                Keyboard(modifier = Modifier.padding(bottom = 48.dp)) {
                                     when (it) {
                                         is KeyEvent.Letter -> viewModel.onLetterPressed(it.letter)
                                         KeyEvent.Delete -> viewModel.onDelPressed()
@@ -83,20 +84,20 @@ private fun ErrorSnackbar(
 @Composable
 fun WordleGrid(boardState: BoardState) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth(1.0f)
+        modifier = Modifier.fillMaxWidth(1.0f).padding(top = 16.dp)
     ) {
         boardState.state.forEach { row ->
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .height(48.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 row.row.forEach { letter ->
                     LetterBox(letter = letter.letter, state = letter.state)
                 }
             }
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

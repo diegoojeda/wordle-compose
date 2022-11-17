@@ -48,6 +48,11 @@ class MainActivity : ComponentActivity() {
                                     .fillMaxSize()
                                     .padding(paddingValues)
                             ) {
+                                CenterAlignedTopAppBar(
+                                    title = {
+                                        Text("Hello Wordle!")
+                                    },
+                                )
                                 ErrorSnackbar(viewModel.errorState, scope, snackbarHostState, viewModel::dismissError)
                                 WordleGrid(viewModel.boardState)
                                 Keyboard(modifier = Modifier.padding(bottom = 48.dp)) {
@@ -84,7 +89,9 @@ private fun ErrorSnackbar(
 @Composable
 fun WordleGrid(boardState: BoardState) {
     Column(
-        modifier = Modifier.fillMaxWidth(1.0f).padding(top = 16.dp)
+        modifier = Modifier
+            .fillMaxWidth(1.0f)
+            .padding(top = 16.dp)
     ) {
         boardState.state.forEach { row ->
             Row(

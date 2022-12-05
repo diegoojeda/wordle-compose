@@ -116,9 +116,9 @@ private fun ErrorSnackbar(
     dismissError: () -> Unit
 ) {
     if (errorState == ErrorState.WordNotInDictionaryError) {
+        dismissError()
         scope.launch {
             snackbarHostState.showSnackbar("Word does not exists")
-            dismissError()
         }
     }
 }

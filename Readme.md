@@ -75,7 +75,6 @@ The app also gets published to the bitrise distribution servers so that you can 
   trigger different recompositions.
 - An offline mode would be great, there's already a `LocalWordsRepository` in place that would make
   its implementation trivial.
-- Fix the error snackbar showing more than once when the word is not in the dictionary
 
 ### Side notes
 

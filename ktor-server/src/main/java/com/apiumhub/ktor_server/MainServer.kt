@@ -1,18 +1,23 @@
 package com.apiumhub.ktor_server
 
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 object MainServer {
     fun start() {
         embeddedServer(Netty, port = 8080) {
+            install(ContentNegotiation) {
+                json()
+            }
             routing {
                 get("/next_word") {
-                    call.respondText(
-                        FIVE_LETTER_WORDS.random()
+                    call.respond(
+                        listOf(FIVE_LETTER_WORDS.random())
                     )
                 }
             }

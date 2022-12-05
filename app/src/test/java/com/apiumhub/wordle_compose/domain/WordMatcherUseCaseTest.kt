@@ -18,7 +18,7 @@ internal class WordMatcherUseCaseTest {
 
     @BeforeEach
     internal fun setUp() {
-        every { repository.getTodaysWord() } returns "Apium"
+        every { repository.getCurrentWord() } returns "Apium"
     }
 
     @Test

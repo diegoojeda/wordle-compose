@@ -9,10 +9,10 @@ import com.apiumhub.wordle_compose.domain.repository.WordsRepository
 
 class WordMatcherUseCase(private val wordsRepository: WordsRepository) {
     operator fun invoke(typedWord: String): WordMatchState {
-        val todaysWord = wordsRepository.getTodaysWord()
+        val currentWord = wordsRepository.currentWord
         return WordMatchState(
             BoardRow(typedWord.mapIndexed { index, char ->
-                val foundIndex = todaysWord.indexOf(char, ignoreCase = true)
+                val foundIndex = currentWord.indexOf(char, ignoreCase = true)
                 BoardLetter(
                     WordleLetter.FilledWordleLetter(char.toString()),
                     calculateIndexState(index, foundIndex)

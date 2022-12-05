@@ -39,6 +39,12 @@ This list is duplicated on both the server and the client, as the client needs t
 
 This duplication could be removed by adding an endpoint to check if the word is valid, but I didn't find it necessary at this stage of the development, as it's not a trivial decision because it would make us impossible to go for an offline mode.
 
+## CI - Bitrise
+
+A Bitrise CI has been created for this project. Even if the `bitrise.yml` file provided is the one that is created out of the box, it's interesting to always have a pipeline running with every push so that you get notified as soon as possible in case you break some tests.
+
+The app also gets published to the bitrise distribution servers so that you can share it easily.
+
 ## Improvements
 
 - Implement navigation with any given number of different libraries to benchmark which one fits your needs better.

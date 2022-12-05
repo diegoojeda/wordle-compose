@@ -26,11 +26,9 @@ class WordMatcherUseCase(private val wordsRepository: WordsRepository) {
     }
 
     private fun calculateIndexState(index: Int, foundIndexes: List<Int>): LetterState =
-        if (index in foundIndexes)
-            LetterState.MATCH
-        else if (foundIndexes.isNotEmpty())
-            LetterState.INCLUDED
-        else
-            LetterState.NOT_INCLUDED
-
+        when {
+            index in foundIndexes -> LetterState.MATCH
+            foundIndexes.isNotEmpty() -> LetterState.INCLUDED
+            else -> LetterState.NOT_INCLUDED
+        }
 }

@@ -12,8 +12,8 @@ Most of the code related to this can be found in the `MainActivity` class.
 Regarding how I've handled recomposition, I've gone with the
 
 ```  
-interface State<out T> {    
-  val value: T
+interface State<out T> {
+  val value: T
 }  
 ```  
 

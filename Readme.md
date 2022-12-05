@@ -1,3 +1,4 @@
+
 # Wordle implementation with Jetpack Compose
 
 This repository contains a custom implementation of the world famous game Wordle, made with Jetpack Compose for the UI layer and providing a Ktor embedded server that will provide a different word every time the user wants to play the game.
@@ -7,11 +8,10 @@ This repository contains a custom implementation of the world famous game Wordle
 On the UI layer, I've decided to use Jetpack Compose along with the new Material Design 3 library. Most of the code related to this can be found in the `MainActivity` class.
 
 Regarding how I've handled recomposition, I've gone with the
-```
-interface State<out T> {  
-    val value: T  
-}
-```
+```  
+interface State<out T> {    
+val value: T }  
+```  
 approach, but any other approach such as LiveData and Flow can be used in similar ways.
 
 To trigger recomposition, you'll find that I had to recreate the states inside each of the domain entities by `copy`ing each of the lists that were modified, as if you just modify the items inside of them the recomposition doesn't trigger.
@@ -55,12 +55,20 @@ The app also gets published to the bitrise distribution servers so that you can 
 
 
 ### Side notes
-The very first approach for getting the words was to use a whole Spanish dictionary (that can be found inside the `es.txt` file), and remove the words that don't have exactly 5 letters with
+There are two dictionaries on the app.
+
+The one on the client is a list of every single 5 letter word that exists in spanish.
+
+This one has been created out of a full spanish dictionary (`es.txt` file), by removing the words that don't have exactly 5 letters with
 
 ```grep -o -w '\w\{5,5\}' es.txt```
 
-After that, we could take the output of the above command and convert it to a valid JSON format with `jq` such as
+After that, we take the output of the above command and convert it to a valid JSON format with `jq` such as
 
 ```jq  --raw-input .  | jq --slurp . ```
 
-The problem with this approach is that there were too many words, a lot of them quite hard to guess because they're not being used really often, so I ended up searching for a list of the most used words in Spanish and taking only the ones with 5 letters on them.
+This way we have a Json Array with every single 5 letter word in spanish.
+
+The second one that is on the server is a list of the most used words in spanish with 5 letters.
+
+We need two dictionaries because we want the users to be able to type any valid word they want in the application, but we want the words to be guessed to not be rare ones, such as many of the ones we can find on `dictionary-es.json`.

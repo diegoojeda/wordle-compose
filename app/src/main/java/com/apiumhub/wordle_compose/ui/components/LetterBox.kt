@@ -12,7 +12,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -27,14 +27,14 @@ fun LetterBox(
     letter: WordleLetter,
     state: LetterState
 ) {
-    val rotation = animateFloatAsState(
+    val rotation  by animateFloatAsState(
         targetValue = if (state == LetterState.EMPTY || state == LetterState.NOT_CHECKED) 0f else 180f,
         animationSpec = tween(
             durationMillis = 400,
             easing = FastOutSlowInEasing,
         )
     )
-    if (rotation.value <= 90f) {
+    if (rotation <= 90f) {
         InternalBox(calculateState(state), rotation, letter)
     } else {
         InternalBox(calculateState(state), rotation, letter)
@@ -44,7 +44,7 @@ fun LetterBox(
 @Composable
 private fun InternalBox(
     backgroundColor: Color,
-    rotation: State<Float>,
+    rotation: Float,
     letter: WordleLetter
 ) {
     Card(
@@ -54,7 +54,7 @@ private fun InternalBox(
         modifier = Modifier
             .aspectRatio(1f)
             .graphicsLayer {
-                rotationX = rotation.value
+                rotationX = rotation
                 cameraDistance = 12f * density
             },
     ) {
@@ -63,7 +63,7 @@ private fun InternalBox(
                 .fillMaxSize()
                 .wrapContentHeight()
                 .graphicsLayer {
-                    if (rotation.value > 90) {
+                    if (rotation > 90) {
                         rotationX = 180f
                     }
                 },

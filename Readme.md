@@ -51,6 +51,7 @@ The app also gets published to the bitrise distribution servers so that you can 
 - Remove the duplication of the words list on the server and client applications.
 - The animation of the cells when the user clicks `Send` on the keyboard can be improved. Right now the cells are painted at the same time as the animation is started, and they should be when the rotated box starts to show. This can be done by duplicating the box component and making them trigger different recompositions.
 - An offline mode would be great, there's already a `LocalWordsRepository` in place that would make its implementation trivial.
+- Fix the error snackbar showing more than once when the word is not in the dictionary
 
 
 ### Side notes

@@ -59,6 +59,7 @@ The very first approach for getting the words was to use a whole Spanish diction
 ```grep -o -w '\w\{5,5\}' es.txt```
 
 After that, we could take the output of the above command and convert it to a valid JSON format with `jq` such as
+
 ```jq  --raw-input .  | jq --slurp . ```
 
 The problem with this approach is that there were too many words, a lot of them quite hard to guess because they're not being used really often, so I ended up searching for a list of the most used words in Spanish and taking only the ones with 5 letters on them.

@@ -13,18 +13,25 @@ class WordMatcherUseCase(private val wordsRepository: WordsRepository) {
         return WordMatchState(
             BoardRow(typedWord.mapIndexed { index, char ->
                 val foundIndex = currentWord.indexOf(char, ignoreCase = true)
+                val indexes =
+                    Regex(char.toString(), RegexOption.IGNORE_CASE)
+                        .findAll(currentWord)
+                        .map { it.range.first }
+                        .toList()
                 BoardLetter(
                     WordleLetter.FilledWordleLetter(char.toString()),
-                    calculateIndexState(index, foundIndex)
+                    calculateIndexState(index, indexes)
                 )
             })
         )
     }
 
-    private fun calculateIndexState(index: Int, foundIndex: Int) =
-        when (foundIndex) {
-            -1 -> LetterState.NOT_INCLUDED
-            index -> LetterState.MATCH
-            else -> LetterState.INCLUDED
-        }
+    private fun calculateIndexState(index: Int, foundIndexes: List<Int>): LetterState =
+        if (index in foundIndexes)
+            LetterState.MATCH
+        else if (foundIndexes.isNotEmpty())
+            LetterState.INCLUDED
+        else
+            LetterState.NOT_INCLUDED
+
 }

@@ -18,12 +18,12 @@ internal class WordMatcherUseCaseTest {
 
     @BeforeEach
     internal fun setUp() {
-        every { repository.getCurrentWord() } returns "Apium"
+        every { repository.currentWord } returns "oleos"
     }
 
     @Test
     internal fun `should match all letters in word`() {
-        val actual = sut("Apium")
+        val actual = sut("oleos")
         assert(actual.state.row.all {
             it.state == LetterState.MATCH
         })
@@ -39,7 +39,7 @@ internal class WordMatcherUseCaseTest {
 
     @Test
     internal fun `should find included letters but not matched`() {
-        val actual = sut("mupia")
+        val actual = sut("soslo")
         assert(actual.state.row.all {
             it.state == LetterState.INCLUDED
         })
@@ -47,7 +47,7 @@ internal class WordMatcherUseCaseTest {
 
     @Test
     internal fun `should find all included, not included and matched letters`() {
-        val actual = sut("apoim")
+        val actual = sut("olxls")
         actual.state.row.forEachIndexed { index, letter ->
             when(index){
                 0 -> assertEquals(letter.state, LetterState.MATCH)

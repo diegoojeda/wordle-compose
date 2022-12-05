@@ -44,6 +44,10 @@ data class BoardState private constructor(val state: List<BoardRow>) {
 
     fun isOutOfTries(): Boolean = !state.last().isEmpty() && !state.last().isCorrectWord()
 
+    fun reset() {
+
+    }
+
     companion object {
         private const val MAX_TRIES = 6
         fun empty() = BoardState(List(MAX_TRIES) { BoardRow.empty() })

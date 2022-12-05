@@ -62,4 +62,9 @@ class WordleViewmodel(
     fun dismissError() {
         errorState = ErrorState.NoError
     }
+
+    fun playAgain() {
+        finishedState = FinishedState.NotFinished
+        boardState = BoardState.empty()
+    }
 }

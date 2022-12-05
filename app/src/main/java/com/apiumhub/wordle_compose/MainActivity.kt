@@ -18,6 +18,7 @@ import com.apiumhub.wordle_compose.ui.components.Keyboard
 import com.apiumhub.wordle_compose.ui.components.LetterBox
 import com.apiumhub.wordle_compose.ui.theme.WordleComposeTheme
 import com.apiumhub.wordle_compose.ui.viewmodel.ErrorState
+import com.apiumhub.wordle_compose.ui.viewmodel.FinishedState
 import com.apiumhub.wordle_compose.ui.viewmodel.WordleViewmodel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -62,6 +63,10 @@ class MainActivity : ComponentActivity() {
                                         KeyEvent.Send -> viewModel.onSendPressed()
                                     }
                                 }
+                                if (viewModel.finishedState == FinishedState.Successful)
+                                    SuccessDialog(viewModel::playAgain)
+                                if (viewModel.finishedState == FinishedState.UnSuccessful)
+                                    UnsuccessfulDialog(viewModel::playAgain)
                             }
                         }
                     )
@@ -69,6 +74,38 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+@Composable
+private fun SuccessDialog(
+    onDismissRequest: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = { Text(text = "¡Enhorabuena!") },
+        text = { Text("¡Has adivinado la palabra satisfactoriamente!") },
+        confirmButton = {
+            Button(onClick = { onDismissRequest() }) {
+                Text("Volver a jugar")
+            }
+        },
+    )
+}
+
+@Composable
+private fun UnsuccessfulDialog(
+    onDismissRequest: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = { Text(text = "¡Lo siento!") },
+        text = { Text("¡No has logrado adivinar la palabra en 6 intentos!") },
+        confirmButton = {
+            Button(onClick = { onDismissRequest() }) {
+                Text("Volver a jugar")
+            }
+        },
+    )
 }
 
 @Composable

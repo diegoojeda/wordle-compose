@@ -12,7 +12,6 @@ class WordMatcherUseCase(private val wordsRepository: WordsRepository) {
         val currentWord = wordsRepository.currentWord
         return WordMatchState(
             BoardRow(typedWord.mapIndexed { index, char ->
-                val foundIndex = currentWord.indexOf(char, ignoreCase = true)
                 val indexes =
                     Regex(char.toString(), RegexOption.IGNORE_CASE)
                         .findAll(currentWord)

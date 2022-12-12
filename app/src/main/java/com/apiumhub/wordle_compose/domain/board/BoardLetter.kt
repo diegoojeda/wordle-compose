@@ -7,7 +7,10 @@ data class BoardLetter(
     val letter: WordleLetter,
     val state: LetterState
 ) {
-    fun isEmpty() = letter is WordleLetter.EmptyWordleLetter
+    val isEmpty get() = letter is WordleLetter.EmptyWordleLetter
+    val isCorrect get() = state == LetterState.MATCH
+    val isMatched get() = state == LetterState.MATCH || state == LetterState.NOT_INCLUDED || state == LetterState.INCLUDED
+    val actualLetter get() = letter.letter
 
     fun setLetter(aLetter: String): BoardLetter =
         this.copy(
@@ -18,16 +21,9 @@ data class BoardLetter(
     fun deleteLetter() =
         this.copy(letter = WordleLetter.EmptyWordleLetter, state = LetterState.EMPTY)
 
-    fun isMatched() =
-        state == LetterState.MATCH || state == LetterState.NOT_INCLUDED || state == LetterState.INCLUDED
-
-    fun getLetter(): String = letter.letter
-
     override fun toString(): String {
         return "${letter.letter},${state.name}"
     }
-
-    fun isCorrect() = state == LetterState.MATCH
 
     companion object {
         fun empty() = BoardLetter(WordleLetter.EmptyWordleLetter, LetterState.EMPTY)

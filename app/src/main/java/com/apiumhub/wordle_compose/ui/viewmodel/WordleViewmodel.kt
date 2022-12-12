@@ -57,7 +57,7 @@ class WordleViewmodel(
     }
 
     fun onSendPressed() {
-        val word = boardState.getWord()
+        val word = boardState.word
         if (!dictionaryRepository.isWordInDictionary(word)) {
             errorState = ErrorState.WordNotInDictionaryError
         } else {
@@ -65,7 +65,7 @@ class WordleViewmodel(
             boardState = boardState.updateWithMatchedWord(result)
             if (result.isCorrect())
                 finishedState = FinishedState.Successful
-            else if (boardState.isOutOfTries())
+            else if (boardState.isOutOfTries)
                 finishedState = FinishedState.UnSuccessful
         }
     }

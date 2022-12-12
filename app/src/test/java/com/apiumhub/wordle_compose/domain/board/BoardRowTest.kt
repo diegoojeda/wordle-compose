@@ -20,13 +20,13 @@ internal class BoardRowTest {
         repeat(size) {
             actual = actual.addLetter("A")
         }
-        assertEquals(assertion, actual.isCompletedRow())
+        assertEquals(assertion, actual.isCompletedRow)
     }
 
     @Test
     internal fun `should delete last letter in row`() {
         val actual = BoardRow.empty().addLetter("A").deleteLastLetter()
-        assertTrue(actual.isEmpty())
+        assertTrue(actual.isEmpty)
     }
 
     @Test

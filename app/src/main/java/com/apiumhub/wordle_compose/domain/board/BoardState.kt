@@ -4,9 +4,13 @@ import com.apiumhub.wordle_compose.domain.WordMatchState
 
 data class BoardState private constructor(val state: List<BoardRow>) {
 
+    val currentRow get() = state.first { !it.isMatched }
+    val word get() = currentRow.word
+    val isOutOfTries get() = !state.last().isEmpty && !state.last().isCorrectWord
+
     fun addLetter(letter: String): BoardState {
-        val currentRow = getCurrentRow()
-        if (currentRow.isCompletedRow())
+        val currentRow = currentRow
+        if (currentRow.isCompletedRow)
             throw IllegalStateException("Row already full, cannot add more letters to it")
         val index = state.indexOf(currentRow)
         return this.copy(
@@ -18,7 +22,7 @@ data class BoardState private constructor(val state: List<BoardRow>) {
     }
 
     fun deleteLastLetter(): BoardState {
-        val currentRow = getCurrentRow()
+        val currentRow = currentRow
         val currentRowIndex = state.indexOf(currentRow)
         return this.copy(
             state = state.subList(0, currentRowIndex) +
@@ -27,13 +31,8 @@ data class BoardState private constructor(val state: List<BoardRow>) {
         )
     }
 
-    fun getCurrentRow() = state.first { !it.isMatched() }
-
-    fun getWord(): String =
-        getCurrentRow().getWord()
-
     fun updateWithMatchedWord(result: WordMatchState): BoardState {
-        val currentRow = getCurrentRow()
+        val currentRow = currentRow
         val currentRowIndex = state.indexOf(currentRow)
         return this.copy(
             state = state.subList(0, currentRowIndex) +
@@ -42,7 +41,6 @@ data class BoardState private constructor(val state: List<BoardRow>) {
         )
     }
 
-    fun isOutOfTries(): Boolean = !state.last().isEmpty() && !state.last().isCorrectWord()
 
     companion object {
         private const val MAX_TRIES = 6

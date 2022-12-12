@@ -10,8 +10,8 @@ internal class BoardStateTest {
 
     @Test
     internal fun `should add letter in first position`() {
-        val actual = emptyBoard.addLetter("A").getCurrentRow()
-        assertEquals("A", actual.row[0].getLetter())
+        val actual = emptyBoard.addLetter("A").currentRow
+        assertEquals("A", actual.row[0].actualLetter)
     }
 
     @Test
@@ -28,13 +28,13 @@ internal class BoardStateTest {
         val actual =
             emptyBoard.addLetter("A").addLetter("P").addLetter("I").addLetter("U").addLetter("M")
                 .deleteLastLetter()
-        assertEquals(4, actual.getCurrentRow().row.fold(0) { acc, next ->
-            acc + if (!next.isEmpty())
+        assertEquals(4, actual.currentRow.row.fold(0) { acc, next ->
+            acc + if (!next.isEmpty)
                 1
             else
                 0
         })
-        assertEquals("U", actual.getCurrentRow().row[3].getLetter())
+        assertEquals("U", actual.currentRow.row[3].actualLetter)
     }
 
     @Test

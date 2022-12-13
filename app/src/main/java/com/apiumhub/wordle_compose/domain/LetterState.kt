@@ -41,5 +41,5 @@ data class WordMatchState(val state: BoardRow) {
         }
     }
 
-    fun isCorrect(): Boolean = state.isCorrectWord
+    val isCorrect get() = state.isCorrectWord
 }

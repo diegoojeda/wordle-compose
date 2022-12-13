@@ -63,7 +63,7 @@ class WordleViewmodel(
         } else {
             val result = matcherUseCase(word)
             boardState = boardState.updateWithMatchedWord(result)
-            if (result.isCorrect())
+            if (result.isCorrect)
                 finishedState = FinishedState.Successful
             else if (boardState.isOutOfTries)
                 finishedState = FinishedState.UnSuccessful

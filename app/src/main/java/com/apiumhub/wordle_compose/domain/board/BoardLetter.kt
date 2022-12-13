@@ -12,18 +12,13 @@ data class BoardLetter(
     val isMatched get() = state == LetterState.MATCH || state == LetterState.NOT_INCLUDED || state == LetterState.INCLUDED
     val actualLetter get() = letter.letter
 
-    fun setLetter(aLetter: String): BoardLetter =
-        this.copy(
-            letter = WordleLetter.FilledWordleLetter(aLetter),
-            state = LetterState.NOT_CHECKED
-        )
+    fun setLetter(aLetter: String) =
+        copy(letter = WordleLetter.FilledWordleLetter(aLetter), state = LetterState.NOT_CHECKED)
 
     fun deleteLetter() =
-        this.copy(letter = WordleLetter.EmptyWordleLetter, state = LetterState.EMPTY)
+        copy(letter = WordleLetter.EmptyWordleLetter, state = LetterState.EMPTY)
 
-    override fun toString(): String {
-        return "${letter.letter},${state.name}"
-    }
+    override fun toString() = "${actualLetter},${state.name}"
 
     companion object {
         fun empty() = BoardLetter(WordleLetter.EmptyWordleLetter, LetterState.EMPTY)

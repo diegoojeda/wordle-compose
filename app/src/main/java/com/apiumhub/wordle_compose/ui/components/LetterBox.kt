@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.apiumhub.wordle_compose.domain.LetterState
+import com.apiumhub.wordle_compose.domain.LetterState.*
 import com.apiumhub.wordle_compose.domain.WordleLetter
 
 @Composable
@@ -28,7 +29,7 @@ fun LetterBox(
     state: LetterState
 ) {
     val rotation  by animateFloatAsState(
-        targetValue = if (state == LetterState.EMPTY || state == LetterState.NOT_CHECKED) 0f else 180f,
+        targetValue = if (state == EMPTY || state == NOT_CHECKED) 0f else 180f,
         animationSpec = tween(
             durationMillis = 400,
             easing = FastOutSlowInEasing,
@@ -73,6 +74,14 @@ private fun InternalBox(
     }
 }
 
+private fun calculateState(state: LetterState) =
+    when (state) {
+        EMPTY, NOT_CHECKED -> Color.White
+        NOT_INCLUDED -> Color.LightGray
+        INCLUDED -> Color.Yellow
+        MATCH -> Color.Green
+    }
+
 @Preview
 @Composable
 fun Preview() {
@@ -81,35 +90,23 @@ fun Preview() {
             letter = WordleLetter.FilledWordleLetter(
                 "A"
             ),
-            state = LetterState.INCLUDED
+            state = INCLUDED
         )
         LetterBox(
             letter = WordleLetter.FilledWordleLetter(
                 "B"
             ),
-            state = LetterState.NOT_INCLUDED
+            state = NOT_INCLUDED
         )
         LetterBox(
             letter = WordleLetter.FilledWordleLetter(
                 "C"
             ),
-            state = LetterState.MATCH
+            state = MATCH
         )
         LetterBox(
             letter = WordleLetter.EmptyWordleLetter,
-            state = LetterState.EMPTY
+            state = EMPTY
         )
     }
 }
-
-private fun calculateState(
-    state: LetterState
-): Color =
-    when (state) {
-        LetterState.EMPTY -> Color.White
-        LetterState.NOT_CHECKED -> Color.White
-        LetterState.NOT_INCLUDED -> Color.LightGray
-        LetterState.INCLUDED -> Color.Yellow
-        LetterState.MATCH -> Color.Green
-    }
-

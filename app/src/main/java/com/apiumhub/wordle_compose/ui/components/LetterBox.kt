@@ -19,14 +19,14 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.apiumhub.wordle_compose.domain.LetterState
-import com.apiumhub.wordle_compose.domain.LetterState.*
+import com.apiumhub.wordle_compose.domain.LetterStatus
+import com.apiumhub.wordle_compose.domain.LetterStatus.*
 import com.apiumhub.wordle_compose.domain.WordleLetter
 
 @Composable
 fun LetterBox(
     letter: WordleLetter,
-    state: LetterState
+    state: LetterStatus
 ) {
     val rotation  by animateFloatAsState(
         targetValue = if (state == EMPTY || state == NOT_CHECKED) 0f else 180f,
@@ -36,9 +36,9 @@ fun LetterBox(
         )
     )
     if (rotation <= 90f) {
-        InternalBox(calculateState(state), rotation, letter)
+        InternalBox(mapToBackgroundColor(state), rotation, letter)
     } else {
-        InternalBox(calculateState(state), rotation, letter)
+        InternalBox(mapToBackgroundColor(state), rotation, letter)
     }
 }
 
@@ -74,7 +74,7 @@ private fun InternalBox(
     }
 }
 
-private fun calculateState(state: LetterState) =
+private fun mapToBackgroundColor(state: LetterStatus) =
     when (state) {
         EMPTY, NOT_CHECKED -> Color.White
         NOT_INCLUDED -> Color.LightGray

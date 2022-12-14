@@ -28,7 +28,7 @@ internal class WordMatchStateTest {
     }
 
     companion object {
-        private val singleValue = BoardLetter(FilledWordleLetter("A"), LetterState.MATCH)
+        private val singleValue = BoardLetter(FilledWordleLetter("A"), LetterStatus.MATCH)
         private val expectedEmpty = generateItems(0)
         private val expectedOneItem = generateItems(1)
         private val expectedFiveItems = generateItems(5)

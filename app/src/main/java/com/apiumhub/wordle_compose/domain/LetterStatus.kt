@@ -2,7 +2,7 @@ package com.apiumhub.wordle_compose.domain
 
 import com.apiumhub.wordle_compose.domain.board.BoardRow
 
-enum class LetterState {
+enum class LetterStatus {
     EMPTY,
     NOT_CHECKED,
     NOT_INCLUDED,
